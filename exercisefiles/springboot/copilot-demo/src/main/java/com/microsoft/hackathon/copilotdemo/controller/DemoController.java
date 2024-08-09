@@ -21,4 +21,24 @@ public class DemoController {
         }
         return "hello " + key;
     }
+
+    // New operation under /diffdates that calculates the difference between two dates.
+    // The operation should receive two dates as parameter in format dd-MM-yyyy and return the difference in days.
+    // If the dates are not passed, return "dates not passed".
+    // If the dates are passed, return the difference in days.
+    @GetMapping("/diffdates")
+    public String diffDates(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2) {
+        if (date1 == null || date2 == null) {
+            return "dates not passed";
+        }
+        // Split the date string into day, month and year
+        String[] date1Parts = date1.split("-");
+        String[] date2Parts = date2.split("-");
+        // Create a LocalDate object for each date
+        LocalDate localDate1 = LocalDate.of(Integer.parseInt(date1Parts[2]), Integer.parseInt(date1Parts[1]), Integer.parseInt(date1Parts[0]));
+        LocalDate localDate2 = LocalDate.of(Integer.parseInt(date2Parts[2]), Integer.parseInt(date2Parts[1]), Integer.parseInt(date2Parts[0]));
+        // Calculate the difference in days
+        long diff = ChronoUnit.DAYS.between(localDate1, localDate2);
+        return String.valueOf(diff);
+    }
 }
